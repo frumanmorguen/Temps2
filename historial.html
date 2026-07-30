@@ -2,183 +2,169 @@
 <html lang="ca">
 
 <head>
+    <meta charset="UTF-8">
 
-<meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1">
+    <title>Historial - Temps</title>
 
-<title>Historial - Temps</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
 
-<link rel="stylesheet" href="style.css">
-
+    <meta name="theme-color" content="#0a84ff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta
+        name="apple-mobile-web-app-status-bar-style"
+        content="default">
 </head>
-
 
 <body>
 
 <div class="app">
 
+    <h1>📋 Historial</h1>
 
-<h1>📋 Historial</h1>
+    <div id="llistaHistorial"></div>
 
+    <button
+        class="primari"
+        onclick="location.href='index.html'">
 
-<div id="llistaHistorial"></div>
+        ⬅ Tornar
 
-
-
-<button
-class="primari"
-onclick="location.href='index.html'">
-
-⬅ Tornar
-
-</button>
-
+    </button>
 
 </div>
-
-
-
 
 
 <!-- NOU REGISTRE -->
 
-<div id="modalNou"
-class="modal ocult">
+<div id="modalNou" class="modal ocult">
+
+    <div class="finestra">
+
+        <h2>➕ Nou registre</h2>
+
+        <label>Activitat</label>
+
+        <input
+            id="novaActivitat"
+            type="text"
+            readonly>
 
 
-<div class="finestra">
+        <label>Data d'entrada</label>
+
+        <input
+            id="novaDataEntrada"
+            type="date">
 
 
-<h2>➕ Nou registre</h2>
+        <label>Hora d'entrada</label>
+
+        <input
+            id="novaEntrada"
+            type="time">
 
 
-<label>Activitat</label>
+        <label>Data de sortida</label>
 
-<input
-id="novaActivitat"
-type="text"
-readonly>
-
-
-<label>Data</label>
-
-<input
-id="novaData"
-type="date">
+        <input
+            id="novaDataSortida"
+            type="date">
 
 
-<label>Entrada</label>
+        <label>Hora de sortida</label>
 
-<input
-id="novaEntrada"
-type="time">
-
-
-<label>Sortida</label>
-
-<input
-id="novaSortida"
-type="time">
+        <input
+            id="novaSortida"
+            type="time">
 
 
+        <button
+            id="guardarNou"
+            class="verd">
 
-<button
-id="guardarNou"
-class="verd">
+            💾 Guardar
 
-💾 Guardar
-
-</button>
-
+        </button>
 
 
-<button
-id="cancelarNou"
-class="vermell">
+        <button
+            id="cancelarNou"
+            class="vermell">
 
-Cancel·lar
+            Cancel·lar
 
-</button>
+        </button>
 
+    </div>
 
 </div>
-
-</div>
-
-
-
-
-
 
 
 <!-- EDITAR REGISTRE -->
 
-<div id="modalEditar"
-class="modal ocult">
+<div id="modalEditar" class="modal ocult">
+
+    <div class="finestra">
+
+        <h2>✏️ Editar registre</h2>
+
+        <label>Activitat</label>
+
+        <input
+            id="editActivitat"
+            type="text"
+            readonly>
 
 
-<div class="finestra">
+        <label>Data i hora d'entrada</label>
+
+        <input
+            id="editInici"
+            type="datetime-local">
 
 
-<h2>✏️ Editar registre</h2>
+        <label>Data i hora de sortida</label>
+
+        <input
+            id="editFinal"
+            type="datetime-local">
 
 
-<label>Activitat</label>
+        <button
+            id="guardarEdit"
+            class="verd">
 
-<input
-id="editActivitat"
-type="text">
+            💾 Guardar canvis
 
-
-
-<label>Entrada</label>
-
-<input
-id="editInici"
-type="datetime-local">
+        </button>
 
 
+        <button
+            id="cancelarEdit"
+            class="vermell">
 
-<label>Sortida</label>
+            Cancel·lar
 
-<input
-id="editFinal"
-type="datetime-local">
+        </button>
 
-
-
-<button
-id="guardarEdit"
-class="verd">
-
-💾 Guardar canvis
-
-</button>
-
-
-
-<button
-id="cancelarEdit"
-class="vermell">
-
-Cancel·lar
-
-</button>
-
+    </div>
 
 </div>
-
-</div>
-
-
-
 
 
 <script src="dades.js"></script>
 <script src="historial.js"></script>
 
+<script>
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("service-worker.js");
+}
+</script>
 
 </body>
 
