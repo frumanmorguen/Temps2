@@ -1,0 +1,353 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+
+body{
+    background:#f2f2f7;
+    color:#1c1c1e;
+    min-height:100vh;
+}
+
+.app{
+    max-width:600px;
+    margin:auto;
+    padding:20px 18px 100px;
+}
+
+h1{
+    text-align:center;
+    margin:20px 0 30px;
+    font-size:34px;
+    font-weight:700;
+}
+
+h2{
+    margin-bottom:15px;
+}
+
+.targeta,
+.activitatHistorial,
+.registre{
+    background:white;
+    border-radius:22px;
+    padding:20px;
+    margin-bottom:18px;
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
+}
+
+label{
+    display:block;
+    margin:15px 0 8px;
+    font-size:15px;
+    color:#6e6e73;
+}
+
+input{
+    width:100%;
+    padding:15px;
+    font-size:18px;
+    border-radius:14px;
+    border:1px solid #d2d2d7;
+    background:white;
+}
+
+button{
+    width:100%;
+    border:0;
+    border-radius:16px;
+    padding:15px;
+    font-size:17px;
+    font-weight:600;
+    cursor:pointer;
+    margin-top:15px;
+}
+
+button:active{
+    transform:scale(.98);
+}
+
+.primari{
+    background:#0a84ff;
+    color:white;
+}
+
+.verd{
+    background:#34c759;
+    color:white;
+}
+
+.vermell{
+    background:#ff3b30;
+    color:white;
+}
+
+.ocult{
+    display:none!important;
+}
+
+
+.estat{
+    text-align:center;
+    color:#ff3b30;
+    font-weight:bold;
+}
+
+
+.rellotge{
+    font-size:48px;
+    text-align:center;
+    font-weight:700;
+    letter-spacing:2px;
+    margin:20px 0;
+}
+
+
+
+/* ==========================
+   ACTIVITATS INICI
+========================== */
+
+
+.preferides{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    margin-top:18px;
+}
+
+
+.activitatBoton{
+    display:flex;
+    gap:8px;
+    align-items:center;
+}
+
+
+.botoActivitat{
+    flex:1;
+    margin:0;
+    background:white;
+    color:#0a84ff;
+    border:1px solid #d2d2d7;
+}
+
+
+.petitEditar,
+.petitEliminar{
+    width:45px;
+    padding:10px;
+    margin:0;
+    font-size:16px;
+}
+
+
+.petitEditar{
+    background:#e5f0ff;
+}
+
+
+.petitEliminar{
+    background:#ffe5e5;
+}
+
+
+
+/* ==========================
+   MODALS
+========================== */
+
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.35);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    backdrop-filter:blur(5px);
+}
+
+
+.finestra{
+    width:100%;
+    max-width:420px;
+    background:white;
+    border-radius:24px;
+    padding:22px;
+}
+
+
+
+/* ==========================
+   HISTORIAL TAULA
+========================== */
+
+
+.capcaleraHistorial,
+.filaHistorial{
+
+    display:grid;
+
+    grid-template-columns:
+    55px
+    90px
+    80px
+    80px
+    90px
+    70px;
+
+    gap:6px;
+
+    align-items:center;
+
+}
+
+
+.capcaleraHistorial{
+
+    font-size:12px;
+    font-weight:bold;
+    color:#6e6e73;
+    padding-bottom:10px;
+    border-bottom:1px solid #ddd;
+
+}
+
+
+.filaHistorial{
+
+    padding:12px 0;
+    border-bottom:1px solid #eee;
+    font-size:14px;
+
+}
+
+
+.accionsHistorial{
+
+    display:flex;
+    gap:5px;
+
+}
+
+
+.accionsHistorial button{
+
+    width:auto;
+    padding:7px;
+    margin:0;
+    font-size:13px;
+
+}
+
+
+.totalActivitat{
+
+    margin-top:15px;
+    padding-top:15px;
+    border-top:2px solid #ddd;
+    text-align:right;
+    font-size:17px;
+
+}
+
+.horesDecimals{
+
+    color:#6e6e73;
+    font-size:.9em;
+    font-weight:500;
+    margin-left:10px;
+
+}
+
+.capcaleraActivitat{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    margin-bottom:15px;
+
+}
+
+
+.capcaleraActivitat h2{
+
+    margin:0;
+
+}
+
+
+.accionsActivitat{
+
+    display:flex;
+    gap:6px;
+
+}
+
+
+.botoPetit{
+
+    width:auto;
+    min-width:42px;
+    padding:8px 12px;
+    margin:0;
+    font-size:13px;
+    border-radius:10px;
+
+}
+
+/* ==========================
+   RESPONSIVE
+========================== */
+
+
+
+
+@media(max-width:600px){
+
+    .capcaleraHistorial,
+    .filaHistorial{
+
+        grid-template-columns:
+        40px
+        70px
+        55px
+        55px
+        70px
+        50px;
+
+        font-size:12px;
+
+    }
+
+
+    .rellotge{
+
+        font-size:40px;
+
+    }
+
+
+    .capcaleraActivitat{
+
+        flex-direction:column;
+
+        align-items:stretch;
+
+    }
+
+
+    .accionsActivitat{
+
+        justify-content:center;
+
+        flex-wrap:wrap;
+
+    }
+
+}

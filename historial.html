@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ca">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1">
+
+<title>Historial - Temps</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+<div class="app">
+
+
+<h1>📋 Historial</h1>
+
+
+<div id="llistaHistorial"></div>
+
+
+
+<button
+class="primari"
+onclick="location.href='index.html'">
+
+⬅ Tornar
+
+</button>
+
+
+</div>
+
+
+
+
+
+<!-- NOU REGISTRE -->
+
+<div id="modalNou"
+class="modal ocult">
+
+
+<div class="finestra">
+
+
+<h2>➕ Nou registre</h2>
+
+
+<label>Activitat</label>
+
+<input
+id="novaActivitat"
+type="text"
+readonly>
+
+
+<label>Data</label>
+
+<input
+id="novaData"
+type="date">
+
+
+<label>Entrada</label>
+
+<input
+id="novaEntrada"
+type="time">
+
+
+<label>Sortida</label>
+
+<input
+id="novaSortida"
+type="time">
+
+
+
+<button
+id="guardarNou"
+class="verd">
+
+💾 Guardar
+
+</button>
+
+
+
+<button
+id="cancelarNou"
+class="vermell">
+
+Cancel·lar
+
+</button>
+
+
+</div>
+
+</div>
+
+
+
+
+
+
+
+<!-- EDITAR REGISTRE -->
+
+<div id="modalEditar"
+class="modal ocult">
+
+
+<div class="finestra">
+
+
+<h2>✏️ Editar registre</h2>
+
+
+<label>Activitat</label>
+
+<input
+id="editActivitat"
+type="text">
+
+
+
+<label>Entrada</label>
+
+<input
+id="editInici"
+type="datetime-local">
+
+
+
+<label>Sortida</label>
+
+<input
+id="editFinal"
+type="datetime-local">
+
+
+
+<button
+id="guardarEdit"
+class="verd">
+
+💾 Guardar canvis
+
+</button>
+
+
+
+<button
+id="cancelarEdit"
+class="vermell">
+
+Cancel·lar
+
+</button>
+
+
+</div>
+
+</div>
+
+
+
+
+
+<script src="dades.js"></script>
+<script src="historial.js"></script>
+
+
+</body>
+
+</html>

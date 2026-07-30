@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ca">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1">
+
+<title>Temps</title>
+
+<link rel="stylesheet" href="style.css">
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0a84ff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+</head>
+
+
+<body>
+
+<div class="app">
+
+
+<h1>⏱️ Temps</h1>
+
+
+
+<div class="targeta" id="pantallaInici">
+
+
+<label>Activitat</label>
+
+
+<input
+id="nomActivitat"
+type="text"
+placeholder="Què estàs fent?">
+
+
+
+<button
+id="novaActivitat"
+class="primari">
+
+➕ Nova activitat
+
+</button>
+
+
+
+<div
+id="llistaActivitats"
+class="preferides">
+
+</div>
+
+
+
+
+<button
+id="botoComencar"
+class="verd">
+
+🟢 COMENÇAR
+
+</button>
+
+
+</div>
+
+
+
+
+
+
+<div
+id="activitatActiva"
+class="targeta ocult">
+
+
+<div class="estat">
+
+🔴 EN CURS
+
+</div>
+
+
+
+<h2 id="nomMostrat"></h2>
+
+
+
+<div
+id="temps"
+class="rellotge">
+
+00:00:00
+
+</div>
+
+
+
+<p id="horaInici"></p>
+
+
+
+
+<button
+id="botoFinalitzar"
+class="vermell">
+
+🔴 FINALITZAR
+
+</button>
+
+
+</div>
+
+
+
+
+
+
+<button
+class="primari"
+onclick="location.href='historial.html'">
+
+📋 HISTORIAL
+
+</button>
+
+
+
+<button
+class="primari"
+onclick="location.href='resum.html'">
+
+📊 RESUM
+
+</button>
+
+
+
+</div>
+
+
+
+<script src="dades.js"></script>
+<script src="app.js"></script>
+<script>
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("service-worker.js");
+}
+</script>
+
+</body>
+
+</html>
