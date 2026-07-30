@@ -1,532 +1,833 @@
-const contenidor=document.getElementById("llistaHistorial");
-
-const modalNou=document.getElementById("modalNou");
-const novaActivitat=document.getElementById("novaActivitat");
-const novaData=document.getElementById("novaData");
-const novaEntrada=document.getElementById("novaEntrada");
-const novaSortida=document.getElementById("novaSortida");
-const guardarNou=document.getElementById("guardarNou");
-const cancelarNou=document.getElementById("cancelarNou");
-
-const modalEditar=document.getElementById("modalEditar");
-const editActivitat=document.getElementById("editActivitat");
-const editInici=document.getElementById("editInici");
-const editFinal=document.getElementById("editFinal");
-const guardarEdit=document.getElementById("guardarEdit");
-const cancelarEdit=document.getElementById("cancelarEdit");
-
-let indexEditant=-1;
+const contenidor =
+document.getElementById("llistaHistorial");
 
 
-function data(ms){
-return new Date(ms).toLocaleDateString("ca-ES");
-}
+// MODAL NOU REGISTRE
+
+const modalNou =
+document.getElementById("modalNou");
+
+const novaActivitat =
+document.getElementById("novaActivitat");
+
+const novaDataEntrada =
+document.getElementById("novaDataEntrada");
+
+const novaEntrada =
+document.getElementById("novaEntrada");
+
+const novaDataSortida =
+document.getElementById("novaDataSortida");
+
+const novaSortida =
+document.getElementById("novaSortida");
+
+const guardarNou =
+document.getElementById("guardarNou");
+
+const cancelarNou =
+document.getElementById("cancelarNou");
 
 
-function hora(ms){
-return new Date(ms).toLocaleTimeString(
-"ca-ES",
-{hour:"2-digit",minute:"2-digit"}
-);
-}
+// MODAL EDITAR REGISTRE
+
+const modalEditar =
+document.getElementById("modalEditar");
+
+const editActivitat =
+document.getElementById("editActivitat");
+
+const editInici =
+document.getElementById("editInici");
+
+const editFinal =
+document.getElementById("editFinal");
+
+const guardarEdit =
+document.getElementById("guardarEdit");
+
+const cancelarEdit =
+document.getElementById("cancelarEdit");
 
 
-function durada(ms){
-
-let minuts=Math.floor(ms/60000);
-let h=Math.floor(minuts/60);
-let m=minuts%60;
-
-return h+" h "+String(m).padStart(2,"0")+" min";
-
-}
+let indexEditant = -1;
 
 
-function duradaDecimal(ms){
+// =============================
+// FORMAT
+// =============================
 
-    let hores=ms/3600000;
+function data(ms) {
 
-    return hores.toLocaleString("ca-ES",{
-        minimumFractionDigits:2,
-        maximumFractionDigits:2
-    })+" h";
-
-}
-
-function inputData(ms){
-
-let d=new Date(ms);
-
-return d.getFullYear()+"-"+
-String(d.getMonth()+1).padStart(2,"0")+"-"+
-String(d.getDate()).padStart(2,"0")+"T"+
-String(d.getHours()).padStart(2,"0")+":"+
-String(d.getMinutes()).padStart(2,"0");
-
-}
-
-
-
-function carregar(){
-
-contenidor.innerHTML="";
-
-let historial=obtenirHistorial();
-
-if(historial.length===0){
-
-contenidor.innerHTML=`
-<div class="targeta">
-Encara no hi ha registres.
-</div>`;
-
-return;
+    return new Date(ms)
+        .toLocaleDateString("ca-ES");
 
 }
 
 
-let grups={};
-
-
-historial.forEach((r,i)=>{
-
-if(!grups[r.activitat])
-grups[r.activitat]=[];
-
-grups[r.activitat].push({
-...r,
-index:i
-});
-
-});
-
-
-
-Object.keys(grups)
-.sort()
-.forEach(nom=>{
-
-
-let total=0;
-
-
-let html=`
-
-<div class="activitatHistorial">
-
-<div class="capcaleraActivitat">
-
-<h2>🔧 ${nom}</h2>
-
-
-<div class="accionsActivitat">
-
-
-<button
-class="verd botoPetit"
-onclick="obrirNou('${nom}')">
-
-➕ Registre
-
-</button>
-
-
-<button
-class="primari botoPetit"
-onclick="exportarCSV('${nom}')">
-
-📄 CSV
-
-</button>
-
-
-<button
-class="primari botoPetit"
-onclick="canviarNomActivitat('${nom}')">
-
-✏️ Nom
-
-</button>
-
-
-<button
-class="vermell botoPetit"
-onclick="eliminarActivitatHistorial('${nom}')">
-
-🗑️ Activitat
-
-</button>
-
-
-</div>
-
-</div>
-
-
-<div class="capcaleraHistorial">
-
-<div>Registre</div>
-<div>Data</div>
-<div>Entrada</div>
-<div>Sortida</div>
-<div>Total</div>
-<div></div>
-
-</div>
-
-`;
-
-
-
-grups[nom]
-.slice()
-.reverse()
-.forEach((r,i)=>{
-
-total+=r.durada;
-
-
-html+=`
-
-<div class="filaHistorial">
-
-<div>R${i+1}</div>
-
-<div>${data(r.inici)}</div>
-
-<div>${hora(r.inici)}</div>
-
-<div>${hora(r.final)}</div>
-
-<div>${durada(r.durada)}</div>
-
-<div class="accionsHistorial">
-
-<button class="primari"
-onclick="editar(${r.index})">
-✏️
-</button>
-
-<button class="vermell"
-onclick="eliminar(${r.index})">
-🗑️
-</button>
-
-</div>
-
-</div>
-
-`;
-
-});
-
-
-html+=`
-
-<div class="totalActivitat">
-
-Total ${nom}:
-<strong>${durada(total)}</strong>
-<span class="horesDecimals">(${duradaDecimal(total)})</span>
-
-</div>
-
-</div>
-
-`;
-
-
-contenidor.innerHTML+=html;
-
-
-});
-
+function hora(ms) {
+
+    return new Date(ms)
+        .toLocaleTimeString(
+            "ca-ES",
+            {
+                hour: "2-digit",
+                minute: "2-digit"
+            }
+        );
 
 }
 
 
+function durada(ms) {
 
+    const minuts =
+    Math.floor(ms / 60000);
 
-function obrirNou(nom){
+    const h =
+    Math.floor(minuts / 60);
 
-novaActivitat.value=nom;
+    const m =
+    minuts % 60;
 
-let avui=new Date();
-
-novaData.value=
-avui.toISOString().substring(0,10);
-
-novaEntrada.value="";
-novaSortida.value="";
-
-modalNou.classList.remove("ocult");
-
-}
-
-
-
-guardarNou.onclick=()=>{
-
-
-if(!novaEntrada.value||!novaSortida.value){
-
-alert("Completa les hores.");
-return;
+    return (
+        h +
+        " h " +
+        String(m).padStart(2, "0") +
+        " min"
+    );
 
 }
 
 
-let inici=new Date(
-novaData.value+"T"+novaEntrada.value
-).getTime();
+function duradaDecimal(ms) {
 
+    const hores =
+    ms / 3600000;
 
-let final=new Date(
-novaData.value+"T"+novaSortida.value
-).getTime();
-
-
-if(final<=inici){
-
-alert("La sortida ha de ser posterior.");
-return;
+    return hores.toLocaleString(
+        "ca-ES",
+        {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }
+    ) + " h";
 
 }
 
 
-afegirRegistre({
+function inputData(ms) {
 
-activitat:novaActivitat.value,
-inici,
-final,
-durada:final-inici
+    const d =
+    new Date(ms);
 
-});
+    return (
+        d.getFullYear() +
+        "-" +
+        String(d.getMonth() + 1).padStart(2, "0") +
+        "-" +
+        String(d.getDate()).padStart(2, "0") +
+        "T" +
+        String(d.getHours()).padStart(2, "0") +
+        ":" +
+        String(d.getMinutes()).padStart(2, "0")
+    );
+
+}
 
 
-modalNou.classList.add("ocult");
+function dataInputLocal(d = new Date()) {
 
-carregar();
+    return (
+        d.getFullYear() +
+        "-" +
+        String(d.getMonth() + 1).padStart(2, "0") +
+        "-" +
+        String(d.getDate()).padStart(2, "0")
+    );
+
+}
+
+
+// =============================
+// MOSTRAR HISTORIAL
+// =============================
+
+function carregar() {
+
+    contenidor.innerHTML = "";
+
+    const historial =
+    obtenirHistorial();
+
+
+    if (historial.length === 0) {
+
+        contenidor.innerHTML = `
+            <div class="targeta">
+                Encara no hi ha registres.
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    const grups = {};
+
+
+    historial.forEach((registre, index) => {
+
+        if (!grups[registre.activitat]) {
+
+            grups[registre.activitat] = [];
+
+        }
+
+        grups[registre.activitat].push({
+            ...registre,
+            index
+        });
+
+    });
+
+
+    Object.keys(grups)
+        .sort((a, b) =>
+            a.localeCompare(b, "ca")
+        )
+        .forEach(nom => {
+
+            let total = 0;
+
+            let html = `
+
+                <div class="activitatHistorial">
+
+                    <div class="capcaleraActivitat">
+
+                        <h2>🔧 ${nom}</h2>
+
+                        <div class="accionsActivitat">
+
+                            <button
+                                class="verd botoPetit"
+                                onclick='obrirNou(${JSON.stringify(nom)})'>
+
+                                ➕ Registre
+
+                            </button>
+
+                            <button
+                                class="primari botoPetit"
+                                onclick='exportarCSV(${JSON.stringify(nom)})'>
+
+                                📄 CSV
+
+                            </button>
+
+                            <button
+                                class="primari botoPetit"
+                                onclick='canviarNomActivitat(${JSON.stringify(nom)})'>
+
+                                ✏️ Nom
+
+                            </button>
+
+                            <button
+                                class="vermell botoPetit"
+                                onclick='eliminarActivitatHistorial(${JSON.stringify(nom)})'>
+
+                                🗑️ Activitat
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="capcaleraHistorial">
+
+                        <div>Registre</div>
+                        <div>Data</div>
+                        <div>Entrada</div>
+                        <div>Sortida</div>
+                        <div>Total</div>
+                        <div></div>
+
+                    </div>
+            `;
+
+
+            grups[nom]
+                .slice()
+                .sort((a, b) =>
+                    b.inici - a.inici
+                )
+                .forEach((registre, index) => {
+
+                    total += registre.durada;
+
+                    html += `
+
+                        <div class="filaHistorial">
+
+                            <div>R${index + 1}</div>
+
+                            <div>
+                                ${data(registre.inici)}
+                            </div>
+
+                            <div>
+                                ${hora(registre.inici)}
+                            </div>
+
+                            <div>
+                                ${hora(registre.final)}
+                            </div>
+
+                            <div>
+                                ${durada(registre.durada)}
+                            </div>
+
+                            <div class="accionsHistorial">
+
+                                <button
+                                    class="primari"
+                                    onclick="editar(${registre.index})">
+
+                                    ✏️
+
+                                </button>
+
+                                <button
+                                    class="vermell"
+                                    onclick="eliminar(${registre.index})">
+
+                                    🗑️
+
+                                </button>
+
+                            </div>
+
+                        </div>
+                    `;
+
+                });
+
+
+            html += `
+
+                    <div class="totalActivitat">
+
+                        Total ${nom}:
+
+                        <strong>
+                            ${durada(total)}
+                        </strong>
+
+                        <span class="horesDecimals">
+                            (${duradaDecimal(total)})
+                        </span>
+
+                    </div>
+
+                </div>
+            `;
+
+
+            contenidor.innerHTML += html;
+
+        });
+
+}
+
+
+// =============================
+// NOU REGISTRE
+// =============================
+
+function obrirNou(nom) {
+
+    const avui =
+    dataInputLocal();
+
+    novaActivitat.value =
+    nom;
+
+    novaDataEntrada.value =
+    avui;
+
+    novaDataSortida.value =
+    avui;
+
+    novaEntrada.value =
+    "";
+
+    novaSortida.value =
+    "";
+
+    modalNou.classList.remove(
+        "ocult"
+    );
+
+}
+
+
+guardarNou.onclick = () => {
+
+    if (
+        !novaDataEntrada.value ||
+        !novaEntrada.value ||
+        !novaDataSortida.value ||
+        !novaSortida.value
+    ) {
+
+        alert(
+            "Completa les dates i les hores."
+        );
+
+        return;
+
+    }
+
+
+    const inici =
+    new Date(
+        novaDataEntrada.value +
+        "T" +
+        novaEntrada.value
+    ).getTime();
+
+
+    const final =
+    new Date(
+        novaDataSortida.value +
+        "T" +
+        novaSortida.value
+    ).getTime();
+
+
+    if (
+        !Number.isFinite(inici) ||
+        !Number.isFinite(final)
+    ) {
+
+        alert(
+            "Les dates o les hores no són correctes."
+        );
+
+        return;
+
+    }
+
+
+    if (final <= inici) {
+
+        alert(
+            "La sortida ha de ser posterior a l'entrada."
+        );
+
+        return;
+
+    }
+
+
+    afegirRegistre({
+
+        activitat:
+        novaActivitat.value,
+
+        inici,
+
+        final,
+
+        durada:
+        final - inici
+
+    });
+
+
+    modalNou.classList.add(
+        "ocult"
+    );
+
+    carregar();
 
 };
 
 
+cancelarNou.onclick = () => {
 
-cancelarNou.onclick=()=>{
-
-modalNou.classList.add("ocult");
-
-};
-
-
-
-
-function editar(index){
-
-indexEditant=index;
-
-let r=obtenirHistorial()[index];
-
-editActivitat.value=r.activitat;
-editInici.value=inputData(r.inici);
-editFinal.value=inputData(r.final);
-
-modalEditar.classList.remove("ocult");
-
-}
-
-
-
-guardarEdit.onclick=()=>{
-
-
-let h=obtenirHistorial();
-
-let r=h[indexEditant];
-
-
-let inici=new Date(editInici.value).getTime();
-let final=new Date(editFinal.value).getTime();
-
-
-if(final<=inici){
-
-alert("Data incorrecta.");
-return;
-
-}
-
-
-r.activitat=editActivitat.value;
-r.inici=inici;
-r.final=final;
-r.durada=final-inici;
-
-
-guardarHistorial(h);
-
-modalEditar.classList.add("ocult");
-
-carregar();
+    modalNou.classList.add(
+        "ocult"
+    );
 
 };
 
 
+// =============================
+// EDITAR REGISTRE
+// =============================
 
-cancelarEdit.onclick=()=>{
+function editar(index) {
 
-modalEditar.classList.add("ocult");
+    indexEditant =
+    index;
+
+    const registre =
+    obtenirHistorial()[index];
+
+    if (!registre) {
+
+        alert(
+            "No s'ha trobat el registre."
+        );
+
+        return;
+
+    }
+
+    editActivitat.value =
+    registre.activitat;
+
+    editInici.value =
+    inputData(registre.inici);
+
+    editFinal.value =
+    inputData(registre.final);
+
+    modalEditar.classList.remove(
+        "ocult"
+    );
+
+}
+
+
+guardarEdit.onclick = () => {
+
+    const historial =
+    obtenirHistorial();
+
+    const registre =
+    historial[indexEditant];
+
+
+    if (!registre) {
+
+        alert(
+            "No s'ha trobat el registre."
+        );
+
+        return;
+
+    }
+
+
+    const inici =
+    new Date(
+        editInici.value
+    ).getTime();
+
+    const final =
+    new Date(
+        editFinal.value
+    ).getTime();
+
+
+    if (
+        !Number.isFinite(inici) ||
+        !Number.isFinite(final)
+    ) {
+
+        alert(
+            "Les dates o les hores no són correctes."
+        );
+
+        return;
+
+    }
+
+
+    if (final <= inici) {
+
+        alert(
+            "La sortida ha de ser posterior a l'entrada."
+        );
+
+        return;
+
+    }
+
+
+    registre.inici =
+    inici;
+
+    registre.final =
+    final;
+
+    registre.durada =
+    final - inici;
+
+
+    guardarHistorial(
+        historial
+    );
+
+
+    modalEditar.classList.add(
+        "ocult"
+    );
+
+    carregar();
 
 };
 
 
+cancelarEdit.onclick = () => {
 
-function eliminar(index){
+    modalEditar.classList.add(
+        "ocult"
+    );
 
-if(confirm("Eliminar aquest registre?")){
-
-eliminarRegistre(index);
-
-carregar();
-
-}
-
-}
+};
 
 
+// =============================
+// ELIMINAR REGISTRE
+// =============================
 
-function canviarNomActivitat(nom){
+function eliminar(index) {
 
-let nou=prompt(
-"Nou nom de l'activitat:",
-nom
-);
+    if (
+        !confirm(
+            "Eliminar aquest registre?"
+        )
+    ) {
 
+        return;
 
-if(!nou || nou.trim()===""){
-return;
-}
+    }
 
+    eliminarRegistre(index);
 
-if(editarActivitat(nom,nou.trim())){
-
-carregar();
-
-}
-else{
-
-alert(
-"No s'ha pogut canviar el nom."
-);
-
-}
+    carregar();
 
 }
 
 
+// =============================
+// ACCIONS D'ACTIVITAT
+// =============================
 
-function eliminarActivitatHistorial(nom){
+function canviarNomActivitat(nom) {
 
-if(confirm(
-"Eliminar l'activitat '"+nom+"' i tots els seus registres?"
-)){
+    let nou =
+    prompt(
+        "Nou nom de l'activitat:",
+        nom
+    );
 
-eliminarActivitat(nom);
+    if (!nou) {
 
-carregar();
+        return;
 
-}
+    }
 
-}
+    nou =
+    nou.trim();
 
+    if (!nou) {
 
+        return;
 
-
-function exportarCSV(nom){
-
-
-let historial=obtenirHistorial()
-.filter(r=>r.activitat===nom);
-
-
-
-if(historial.length===0){
-
-alert(
-"No hi ha registres per exportar."
-);
-
-return;
-
-}
+    }
 
 
+    if (
+        editarActivitat(
+            nom,
+            nou
+        )
+    ) {
 
-let csv="Registre;Data;Entrada;Sortida;Hores;Decimal\n";
+        carregar();
 
+    }
+    else {
 
-let total=0;
+        alert(
+            "No s'ha pogut canviar el nom. Potser ja existeix una activitat amb aquest nom."
+        );
 
-
-historial
-.slice()
-.reverse()
-.forEach((r,i)=>{
-
-
-total+=r.durada;
-
-
-let hores=(r.durada/3600000)
-.toLocaleString(
-"ca-ES",
-{
-minimumFractionDigits:2,
-maximumFractionDigits:2
-}
-);
-
-
-csv+=
-`R${i+1};${data(r.inici)};${hora(r.inici)};${hora(r.final)};${durada(r.durada)};${hores}\n`;
-
-
-
-});
-
-
-csv+=
-`;;;;TOTAL;${(total/3600000).toLocaleString("ca-ES",{minimumFractionDigits:2,maximumFractionDigits:2})}`;
-
-
-
-let blob=new Blob(
-[csv],
-{
-type:"text/csv;charset=utf-8;"
-}
-);
-
-
-
-let url=URL.createObjectURL(blob);
-
-
-
-let a=document.createElement("a");
-
-a.href=url;
-
-a.download=
-nom.replaceAll(" ","_")+".csv";
-
-
-a.click();
-
-
-URL.revokeObjectURL(url);
-
+    }
 
 }
 
-window.onload=carregar;
+
+function eliminarActivitatHistorial(nom) {
+
+    if (
+        !confirm(
+            "Eliminar l'activitat \"" +
+            nom +
+            "\" i tots els seus registres?"
+        )
+    ) {
+
+        return;
+
+    }
+
+    eliminarActivitat(nom);
+
+    carregar();
+
+}
+
+
+// =============================
+// EXPORTAR CSV
+// =============================
+
+function exportarCSV(nom) {
+
+    const historial =
+    obtenirHistorial()
+        .filter(registre =>
+            registre.activitat === nom
+        )
+        .sort((a, b) =>
+            b.inici - a.inici
+        );
+
+
+    if (historial.length === 0) {
+
+        alert(
+            "No hi ha registres per exportar."
+        );
+
+        return;
+
+    }
+
+
+    let csv =
+    "\uFEFF";
+
+    csv +=
+    "Activitat;" +
+    nom +
+    "\n\n";
+
+    csv +=
+    "Registre;Data entrada;Hora entrada;Data sortida;Hora sortida;Hores;Decimal\n";
+
+
+    let total = 0;
+
+
+    historial.forEach(
+        (registre, index) => {
+
+            total +=
+            registre.durada;
+
+            const decimal =
+            (
+                registre.durada /
+                3600000
+            ).toLocaleString(
+                "ca-ES",
+                {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }
+            );
+
+
+            csv +=
+            `R${index + 1};` +
+            `${data(registre.inici)};` +
+            `${hora(registre.inici)};` +
+            `${data(registre.final)};` +
+            `${hora(registre.final)};` +
+            `${durada(registre.durada)};` +
+            `${decimal}\n`;
+
+        }
+    );
+
+
+    csv +=
+    "\n;;;;;TOTAL;" +
+    (
+        total /
+        3600000
+    ).toLocaleString(
+        "ca-ES",
+        {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }
+    );
+
+
+    const blob =
+    new Blob(
+        [csv],
+        {
+            type:
+            "text/csv;charset=utf-8;"
+        }
+    );
+
+
+    const url =
+    URL.createObjectURL(blob);
+
+
+    const enllac =
+    document.createElement("a");
+
+
+    const nomFitxer =
+    nom
+        .trim()
+        .replace(
+            /[^\p{L}\p{N}_-]+/gu,
+            "_"
+        );
+
+
+    enllac.href =
+    url;
+
+    enllac.download =
+    nomFitxer +
+    ".csv";
+
+
+    document.body.appendChild(
+        enllac
+    );
+
+    enllac.click();
+
+    enllac.remove();
+
+
+    setTimeout(
+        () =>
+        URL.revokeObjectURL(url),
+        1000
+    );
+
+}
+
+
+window.onload =
+carregar;
