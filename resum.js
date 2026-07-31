@@ -182,6 +182,109 @@ location.href="index.html";
 }
 
 
+/* ===============================
+   FUNCIONS DE BACKUP I RESTORE
+=============================== */
+
+function obtenirBackupComplet(){
+
+const backup={
+activitats:localStorage.getItem("temps_activitats"),
+historial:localStorage.getItem("historial"),
+actiu:localStorage.getItem("temps_actiu"),
+data:new Date().toLocaleString("ca-ES")
+};
+
+return JSON.stringify(backup, null, 2);
+
+}
+
+function descarregarBackup(){
+
+const backup=obtenirBackupComplet();
+const blob=new Blob([backup], {type:"application/json"});
+const url=URL.createObjectURL(blob);
+const a=document.createElement("a");
+a.href=url;
+a.download="temps-backup-"+new Date().getTime()+".json";
+document.body.appendChild(a);
+a.click();
+document.body.removeChild(a);
+URL.revokeObjectURL(url);
+
+alert("✅ Backup descarregat!");
+
+}
+
+function mostrarBackup(){
+
+const backup=obtenirBackupComplet();
+document.getElementById("textBackup").value=backup;
+document.getElementById("modalBackup").classList.remove("ocult");
+
+}
+
+function tancarBackup(){
+
+document.getElementById("modalBackup").classList.add("ocult");
+
+}
+
+function copiarBackup(){
+
+const text=document.getElementById("textBackup");
+text.select();
+document.execCommand("copy");
+alert("✅ Backup copiat al portapapeles!");
+
+}
+
+function restaurarBackup(){
+
+const input=document.createElement("input");
+input.type="file";
+input.accept=".json";
+
+input.onchange=(e)=>{
+
+const file=e.target.files[0];
+const reader=new FileReader();
+
+reader.onload=(event)=>{
+
+try{
+
+const backup=JSON.parse(event.target.result);
+
+if(backup.activitats)
+localStorage.setItem("temps_activitats", backup.activitats);
+
+if(backup.historial)
+localStorage.setItem("historial", backup.historial);
+
+if(backup.actiu)
+localStorage.setItem("temps_actiu", backup.actiu);
+
+alert("✅ Backup restaurat correctament!\n\nRecarregant pàgina...");
+location.reload();
+
+}catch(err){
+
+alert("❌ Error en restaurar el backup:\n"+err.message);
+
+}
+
+};
+
+reader.readAsText(file);
+
+};
+
+input.click();
+
+}
+
+
 
 window.onload=()=>{
 
