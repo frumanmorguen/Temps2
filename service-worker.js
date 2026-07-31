@@ -11,9 +11,9 @@ const FITXERS = [
     "resum.js",
     "servei-treballador.js",
     "manifest.json",
-    "icona-192.png",
-    "icona-512.png",
-    "icona-1024.png"
+    "icon-192.png",
+    "icon-512.png",
+    "icon-1024.png"
 ];
 
 
