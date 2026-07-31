@@ -8,7 +8,12 @@ const FITXERS = [
     "dades.js",
     "app.js",
     "historial.js",
-    "resum.js"
+    "resum.js",
+    "servei-treballador.js",
+    "manifest.json",
+    "icona-192.png",
+    "icona-512.png",
+    "icona-1024.png"
 ];
 
 
