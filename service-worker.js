@@ -1,4 +1,4 @@
-const CACHE = "temps-v1";
+const CACHE = "temps-v2";
 
 const FITXERS = [
     "index.html",
